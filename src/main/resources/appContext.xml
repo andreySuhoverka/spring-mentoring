@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:book.properties" />
+    </bean>
+
+    <!-- start all related with book-->
+    <bean id="book" class="com.epam.sukhoverka.xmlconfig.bean.Book" scope="prototype"> <!--here you can set scope='singleton' to prevent of creating book bean any time when it needed-->
+        <constructor-arg index="0" ref="bookTitle" />
+        <constructor-arg index="1" ref="bookAuthor" />
+    </bean>
+
+    <bean id="bookTitle" class="java.lang.String">
+        <constructor-arg value="${book.title}" />
+    </bean>
+
+    <bean id="bookAuthor" class="java.lang.String">
+        <constructor-arg value="${book.author}" />
+    </bean>
+    <!-- end all related with book-->
+
+    <bean id="bookReader" class="com.epam.sukhoverka.xmlconfig.bean.BookReader">
+        <property name="book" ref="book" />
+    </bean>
+
+    <bean id="bookReader1" class="com.epam.sukhoverka.xmlconfig.bean.BookReader">
+        <property name="book" ref="book" />
+    </bean>
+
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+    <!-- start custom post processors-->
+    <bean class="com.epam.sukhoverka.xmlconfig.beenpostprocessor.SpeakerAnnotationBeenPostProcessor" />
+    <bean class="com.epam.sukhoverka.xmlconfig.beenpostprocessor.BookReaderTrackerAnnotationBeanPostProcessor" />
+    <!-- end custom post processors-->
+
+
+</beans>
